@@ -104,4 +104,201 @@ describe('FilterService Suite', () => {
         filteredValue = filterService.filter(timeData,[''],'Tue Aug 05 2019 00:00:00 GMT+0300 (GMT+03:00)','gte');
         expect(filteredValue.length).toEqual(0);
     });
+
+    describe('startsWith',()=>{
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.startsWith('', ' ', '');
+            
+            expect(result).toBeTrue();
+        });
+    
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.startsWith(null, 'text', '');
+            
+            expect(result).toBeFalse();
+        });
+    });
+
+    describe('contains',()=>{
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.contains('', ' ', '');
+            
+            expect(result).toBeTrue();
+        });
+    
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.contains(null, 'text', '');
+            
+            expect(result).toBeFalse();
+        });
+    });
+
+    describe('notContains',()=>{
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.notContains('', ' ', '');
+            
+            expect(result).toBeTrue();
+        });
+    
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.notContains(null, 'text', '');
+            
+            expect(result).toBeFalse();
+        });
+    });
+
+    describe('endsWith',()=>{
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.endsWith('', ' ', '');
+            
+            expect(result).toBeTrue();
+        });
+    
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.endsWith(null, 'text', '');
+            
+            expect(result).toBeFalse();
+        });
+    });
+
+    describe('equals',()=>{
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.equals('', ' ', '');
+            
+            expect(result).toBeTrue();
+        });
+    
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.equals(null, 'text', '');
+            
+            expect(result).toBeFalse();
+        });
+    });
+
+    describe('notEquals',()=>{
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.notEquals('', ' ', '');
+            
+            expect(result).toBeFalse();
+        });
+    
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.notEquals(null, 'text', '');
+            
+            expect(result).toBeTrue();
+        });
+    });
+
+   describe('lt',()=>{ 
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.lt('', null, '');
+
+            expect(result).toBeTrue();
+        });
+
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.lt(null, ' ', '');
+    
+            expect(result).toBeFalse();
+        });
+    });
+
+
+    describe('lte',()=>{ 
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.lte('', null, '');
+
+            expect(result).toBeTrue();
+        });
+
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.lte(null, ' ', '');
+    
+            expect(result).toBeFalse();
+        });
+    });
+
+    describe('gt',()=>{ 
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.gt('', null, '');
+
+            expect(result).toBeTrue();
+        });
+
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.gt(null, ' ', '');
+    
+            expect(result).toBeFalse();
+        });
+    });
+
+    describe('gte',()=>{ 
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.gte('', null, '');
+
+            expect(result).toBeTrue();
+        });
+
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.gte(null, ' ', '');
+    
+            expect(result).toBeFalse();
+        });
+    });
+
+    describe('dateIs',()=>{ 
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.dateIs('', null);
+
+            expect(result).toBeTrue();
+        });
+
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.dateIs(null, ' ');
+    
+            expect(result).toBeFalse();
+        });
+    });
+
+    describe('dateIsNot',()=>{ 
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.dateIsNot('', null);
+
+            expect(result).toBeTrue();
+        });
+
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.dateIsNot(null, ' ');
+    
+            expect(result).toBeFalse();
+        });
+    });
+
+    describe('dateBefore',()=>{ 
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.dateBefore('', null);
+
+            expect(result).toBeTrue();
+        });
+
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.dateBefore(null, ' ');
+    
+            expect(result).toBeFalse();
+        });
+    });
+
+    describe('dateAfter',()=>{ 
+        it('should return true if the filter is empty', () => {
+            const result = filterService.filters.dateAfter('', null);
+
+            expect(result).toBeTrue();
+        });
+
+        it('should return false if the value is empty', () => {
+            const result = filterService.filters.dateAfter(null, ' ');
+    
+            expect(result).toBeFalse();
+        });
+    });
 });

@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { Accordion } from './accordion';
 import { AccordionTab } from './accordion'
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, DebugElement, NO_ERRORS_SCHEMA, QueryList, TemplateRef } from '@angular/core';
 
 @Component({
 	template: `<p-accordion [collapseIcon]="collapseIcon" [expandIcon]="expandIcon" [styleClass]="styleClass" [style]="style">
@@ -192,4 +192,45 @@ describe('Accordion', () => {
 		const secondAccordionTabHeaderEl = fixture.debugElement.children[0].children[0].children[1].query(By.css('.p-accordion-header')).nativeElement;
 		expect(secondAccordionTabHeaderEl.className).toContain('p-highlight');
 	});
+
+	describe('ngAfterContentInit', ()=>{
+		it('should set contentTemplate if the type is content',()=>{
+			const template = TemplateRef.prototype;
+			firstAccordionTab.templates = [{ template, getType: ()=> 'content'}] as unknown as QueryList<any>;
+
+			firstAccordionTab.ngAfterContentInit();
+
+			expect(firstAccordionTab.contentTemplate).toEqual(template);
+			expect(firstAccordionTab.headerTemplate).toEqual(undefined);
+		});
+
+		it('should set headerTemplate if the type is header',()=>{
+			const template = TemplateRef.prototype;
+			firstAccordionTab.templates = [{ template, getType: ()=> 'header'}] as unknown as QueryList<any>;
+
+			firstAccordionTab.ngAfterContentInit();
+
+			expect(firstAccordionTab.contentTemplate).toEqual(undefined);
+			expect(firstAccordionTab.headerTemplate).toEqual(template);
+		});
+
+		it('should set contentTemplate if the type is any other',()=>{
+			const template = TemplateRef.prototype;
+			firstAccordionTab.templates = [{ template, getType: ()=> 'any other'}] as unknown as QueryList<any>;
+
+			firstAccordionTab.ngAfterContentInit();
+
+			expect(firstAccordionTab.contentTemplate).toEqual(template);
+			expect(firstAccordionTab.headerTemplate).toEqual(undefined);
+		});
+	});
+
+	it('should not call updateSelectionState if preventActiveIndexPropagation is enabled',()=>{
+		accordion.preventActiveIndexPropagation = true;
+		const updateSelectionStateSpy = spyOn(accordion, 'updateSelectionState');
+
+		accordion.activeIndex = undefined;
+
+		expect(updateSelectionStateSpy).not.toHaveBeenCalled();
+	})
 });
