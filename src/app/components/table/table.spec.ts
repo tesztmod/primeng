@@ -3,10 +3,10 @@ import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { Table, TableModule, EditableColumn } from './table';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Component } from '@angular/core';
+import { Component, QueryList, TemplateRef, SimpleChanges } from '@angular/core';
 import { DropdownModule} from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
-import { SharedModule } from 'primeng/api';
+import { SharedModule, PrimeTemplate } from 'primeng/api';
 import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -1620,4 +1620,274 @@ describe('Table', () => {
         state = JSON.parse((stateTable.getStorage().getItem(stateTable.stateKey)));
         expect(state).toBeNull();
     });
+
+     describe('ngAfterContentInit', ()=>{
+        it('should set captionTemplate if the type is caption', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'caption'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.captionTemplate).toEqual(template);
+        });
+
+        it('should set headerTemplate if the type is header', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'header'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.headerTemplate).toEqual(template);
+        });
+
+        it('should set headerGroupedTemplate if the type is headergrouped', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'headergrouped'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.headerGroupedTemplate).toEqual(template);
+        });
+
+        it('should set bodyTemplate if the type is body', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'body'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.bodyTemplate).toEqual(template);
+        });
+
+        it('should set loadingBodyTemplate if the type is loadingbody', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'loadingbody'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.loadingBodyTemplate).toEqual(template);
+        });
+
+        it('should set footerTemplate if the type is footer', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'footer'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.footerTemplate).toEqual(template);
+        });
+
+        it('should set footerGroupedTemplate if the type is footergrouped', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'footergrouped'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.footerGroupedTemplate).toEqual(template);
+        });
+
+        it('should set summaryTemplate if the type is summary', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'summary'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.summaryTemplate).toEqual(template);
+        });
+
+        it('should set colGroupTemplate if the type is colgroup', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'colgroup'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.colGroupTemplate).toEqual(template);
+        });
+
+        it('should set expandedRowTemplate if the type is rowexpansion', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'rowexpansion'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.expandedRowTemplate).toEqual(template);
+        });
+
+        it('should set groupHeaderTemplate if the type is groupheader', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'groupheader'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.groupHeaderTemplate).toEqual(template);
+        });
+
+        it('should set rowspanTemplate if the type is rowspan', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'rowspan'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.rowspanTemplate).toEqual(template);
+        });
+
+        it('should set groupFooterTemplate if the type is groupfooter', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'groupfooter'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.groupFooterTemplate).toEqual(template);
+        });
+
+        it('should set frozenRowsTemplate if the type is frozenrows', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'frozenrows'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.frozenRowsTemplate).toEqual(template);
+        });
+
+        it('should set frozenHeaderTemplate if the type is frozenheader', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'frozenheader'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.frozenHeaderTemplate).toEqual(template);
+        });
+
+        it('should set frozenBodyTemplate if the type is frozenbody', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'frozenbody'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.frozenBodyTemplate).toEqual(template);
+        });
+
+        it('should set frozenFooterTemplate if the type is frozenfooter', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'frozenfooter'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.frozenFooterTemplate).toEqual(template);
+        });
+
+        it('should set frozenColGroupTemplate if the type is frozencolgroup', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'frozencolgroup'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.frozenColGroupTemplate).toEqual(template);
+        });
+
+        it('should set frozenExpandedRowTemplate if the type is frozenrowexpansion', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'frozenrowexpansion'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.frozenExpandedRowTemplate).toEqual(template);
+        });
+
+        it('should set emptyMessageTemplate if the type is emptymessage', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'emptymessage'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.emptyMessageTemplate).toEqual(template);
+        });
+
+        it('should set paginatorLeftTemplate if the type is paginatorleft', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'paginatorleft'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.paginatorLeftTemplate).toEqual(template);
+        });
+
+        it('should set paginatorRightTemplate if the type is paginatorright', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'paginatorright'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.paginatorRightTemplate).toEqual(template);
+        });
+
+        it('should set paginatorDropdownItemTemplate if the type is paginatordropdownitem', ()=>{
+            const template = TemplateRef.prototype;
+			table.templates = [{ template, getType: ()=> 'paginatordropdownitem'}] as unknown as QueryList<any>;
+
+            table.ngAfterContentInit();
+
+            expect(table.paginatorDropdownItemTemplate).toEqual(template);
+        });
+    });
+
+    describe('ngOnChanges',()=>{
+        it('should set _value to the currentValue', ()=>{
+            const currentValue = 'currentValue';
+            const changes: SimpleChanges = { value: { currentValue } as any } as SimpleChanges; 
+
+            table.ngOnChanges(changes);
+
+            expect(table._value).toBe(currentValue);
+        });
+
+        it('should restore state if the table is stateful and the state is not restored before', ()=>{
+            const currentValue = 'currentValue';
+            spyOn(table, 'isStateful').and.returnValue(true);
+            const restoreStateSpy = spyOn(table, 'restoreState');
+            table.stateRestored = false;
+            const changes: SimpleChanges = { value: { currentValue } as any } as SimpleChanges; 
+
+            table.ngOnChanges(changes);
+
+            expect(restoreStateSpy).toHaveBeenCalled();
+        });
+
+        it('should single sort the table if the single mode is on an it is sortable', ()=>{
+            const currentValue = 'currentValue';
+            table.lazy = false;
+            table.sortMode = 'single';
+            table.groupRowsBy = true;
+            const sortSingleSpy = spyOn(table, 'sortSingle');
+            const changes: SimpleChanges = { value: { currentValue } as any } as SimpleChanges; 
+
+            table.ngOnChanges(changes);
+
+            expect(sortSingleSpy).toHaveBeenCalled();
+        });
+
+        it('should multiple sort the table if the multiple mode is on an it is sortable', ()=>{
+            const currentValue = 'currentValue';
+            table.lazy = false;
+            table.sortMode = 'multiple';
+            table.groupRowsBy = true;
+            const sortMultipleSpy = spyOn(table, 'sortMultiple');
+            const changes: SimpleChanges = { value: { currentValue } as any } as SimpleChanges; 
+
+            table.ngOnChanges(changes);
+
+            expect(sortMultipleSpy).toHaveBeenCalled();
+        });
+
+        it('should sort with already available filters', ()=>{
+            const currentValue = 'currentValue';
+            table.lazy = false;
+            spyOn(table, 'hasFilter').and.returnValue(true);
+            const _filterSpy = spyOn(table, '_filter');
+            const changes: SimpleChanges = { value: { currentValue } as any } as SimpleChanges; 
+
+            table.ngOnChanges(changes);
+
+            expect(_filterSpy).toHaveBeenCalled();
+        });
+    })
 });
