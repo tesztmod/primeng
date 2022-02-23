@@ -1,3 +1,4 @@
+import { SortMeta } from './../api/sortmeta';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -1889,5 +1890,89 @@ describe('Table', () => {
 
             expect(_filterSpy).toHaveBeenCalled();
         });
+    });
+
+
+    //ngOnInit
+
+    it("should ngOnInit call onLazyload emit if virtual scroll is enabled and set restoringFilter to false", ()=>{
+        table.lazy = true;
+        table.lazyLoadOnInit = true;
+        table.virtualScroll = false;
+        table.restoringFilter = true;
+        const onLazLoadSpy = spyOn(table.onLazyLoad, 'emit')
+
+        table.ngOnInit();
+
+        expect(onLazLoadSpy).toHaveBeenCalled();
+        expect(table.restoringFilter).toBe(false); 
+    })
+
+    it("should onPageChange call onLazyLoad if lazy, saveState if stateFul and resetScrollTop if scrollable", ()=>{
+        table.lazy = true;
+        table.scrollable = true;
+        table.stateKey = 'something';
+        const onLazLoadSpy = spyOn(table.onLazyLoad, 'emit')
+        const saveStateSpy = spyOn(table, 'saveState')
+        const resetScrollTopSpy = spyOn(table, 'resetScrollTop')
+
+        table.onPageChange(Event.prototype);
+
+        expect(onLazLoadSpy).toHaveBeenCalled();
+        expect(saveStateSpy).toHaveBeenCalled();
+        expect(resetScrollTopSpy).toHaveBeenCalled();
+    })
+
+    describe('sortMultiple', ()=>{ 
+        it("should groupRowsBy exists and multiSortMeta is empty then call getGroupRowsMeta", ()=>{
+            table.groupRowsBy = true;
+            table._multiSortMeta = undefined;
+            const getGroupRowsMetaSpy = spyOn(table, 'getGroupRowsMeta')
+
+            table.sortMultiple();
+    
+            expect(getGroupRowsMetaSpy).toHaveBeenCalled();
+        })
+
+        it("should groupRowsBy exists and multiSortMeta is exists then call getGroupRowsMeta to multiSortMeta", ()=>{
+            table.groupRowsBy = true;
+            table._multiSortMeta = [{field: "3"}] as SortMeta[];
+            const getGroupRowsMetaSpy = spyOn(table, 'getGroupRowsMeta')
+
+            table.sortMultiple();
+    
+            expect(getGroupRowsMetaSpy).toHaveBeenCalled();
+        })
+
+        it("should call onLazyLoad if lazy is enabled", ()=>{
+            table.multiSortMeta = [{field: "3"}] as SortMeta[];
+            table.lazy = true;
+            const onLazLoadSpy = spyOn(table.onLazyLoad, 'emit')
+
+            table.sortMultiple();
+    
+            expect(onLazLoadSpy).toHaveBeenCalled();
+        })
+
+        it("should call sortFunction if multiSortMeta and value exists and customSort is true", ()=>{
+            table.multiSortMeta = [{field: "3"}] as SortMeta[];
+            table.value = ['value'];
+            table.customSort = true;
+            const sortFunctionSpy = spyOn(table.sortFunction, 'emit')
+
+            table.sortMultiple();
+    
+            expect(sortFunctionSpy).toHaveBeenCalled();
+        })
+
+        it("should call _filter i multiSortMeta exists and hasFilter", ()=>{
+            table.multiSortMeta = [{field: "3"}] as SortMeta[];
+            spyOn(table, 'hasFilter').and.returnValue(true);
+            const _filterSpy = spyOn(table, '_filter')
+
+            table.sortMultiple();
+    
+            expect(_filterSpy).toHaveBeenCalled();
+        }) 
     })
 });
