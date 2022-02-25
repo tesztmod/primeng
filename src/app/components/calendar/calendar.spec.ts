@@ -1,3 +1,4 @@
+import { DomHandler } from 'primeng/dom';
 import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Calendar } from './calendar';
@@ -5,7 +6,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'primeng/api';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, TemplateRef, QueryList, ElementRef } from '@angular/core';
 
 describe('Calendar', () => {
 
@@ -1798,4 +1799,247 @@ describe('Calendar', () => {
 		expect(calendar.currentMinute).toEqual(10);
 		expect(calendar.pm).toEqual(false);
 	});
+
+	it('should call createMonth with current month and year if there exists',()=>{
+		const month = 1;
+		const year = 2022;
+		calendar.currentMonth = month;
+		calendar.currentYear = year;
+		const createMonthSpy = spyOn(calendar, 'createMonth');
+
+		calendar.minDate = new Date();
+
+		expect(createMonthSpy).toHaveBeenCalledWith(month, year);
+	})
+
+	it('should call createMonth with current month and year if there exists',()=>{
+		const month = 1;
+		const year = 2022;
+		calendar.currentMonth = month;
+		calendar.currentYear = year;
+		const createMonthSpy = spyOn(calendar, 'createMonth');
+
+		calendar.maxDate = new Date();
+
+		expect(createMonthSpy).toHaveBeenCalledWith(month, year);
+	})
+
+	it('should call createMonth with current month and year if there exists',()=>{
+		const month = 1;
+		const year = 2022;
+		calendar.currentMonth = month;
+		calendar.currentYear = year;
+		const createMonthSpy = spyOn(calendar, 'createMonth');
+
+		calendar.disabledDates = [new Date()];
+
+		expect(createMonthSpy).toHaveBeenCalledWith(month, year);
+	})
+
+	it('should call createMonth with current month and year if there exists',()=>{
+		const month = 1;
+		const year = 2022;
+		calendar.currentMonth = month;
+		calendar.currentYear = year;
+		const createMonthSpy = spyOn(calendar, 'createMonth');
+
+		calendar.disabledDays = [1];
+
+		expect(createMonthSpy).toHaveBeenCalledWith(month, year);
+	})
+
+	describe('ngAfterContentInit',()=>{
+		it('should set dateTemplate if the type is date', ()=>{
+            const template = TemplateRef.prototype;
+			calendar.templates = [{ template, getType: ()=> 'date'}] as unknown as QueryList<any>;
+
+            calendar.ngAfterContentInit();
+
+            expect(calendar.dateTemplate).toEqual(template);
+        });
+
+		it('should set decadeTemplate if the type is decade', ()=>{
+            const template = TemplateRef.prototype;
+			calendar.templates = [{ template, getType: ()=> 'decade'}] as unknown as QueryList<any>;
+
+            calendar.ngAfterContentInit();
+
+            expect(calendar.decadeTemplate).toEqual(template);
+        });
+
+		it('should set disabledDateTemplate if the type is disabledDate', ()=>{
+            const template = TemplateRef.prototype;
+			calendar.templates = [{ template, getType: ()=> 'disabledDate'}] as unknown as QueryList<any>;
+
+            calendar.ngAfterContentInit();
+
+            expect(calendar.disabledDateTemplate).toEqual(template);
+        });
+
+		it('should set headerTemplate if the type is header', ()=>{
+            const template = TemplateRef.prototype;
+			calendar.templates = [{ template, getType: ()=> 'header'}] as unknown as QueryList<any>;
+
+            calendar.ngAfterContentInit();
+
+            expect(calendar.headerTemplate).toEqual(template);
+        });
+
+		it('should set footerTemplate if the type is footer', ()=>{
+            const template = TemplateRef.prototype;
+			calendar.templates = [{ template, getType: ()=> 'footer'}] as unknown as QueryList<any>;
+
+            calendar.ngAfterContentInit();
+
+            expect(calendar.footerTemplate).toEqual(template);
+        });
+
+		it('should set dateTemplate if the type is anything else', ()=>{
+            const template = TemplateRef.prototype;
+			calendar.templates = [{ template, getType: ()=> 'anything else'}] as unknown as QueryList<any>;
+
+            calendar.ngAfterContentInit();
+
+            expect(calendar.dateTemplate).toEqual(template);
+        });
+	});
+
+	describe('onYearSelect',()=>{
+		it('should call onDateSelect if the view is year',()=>{
+			calendar.view = 'year';
+			const onDateSelectSpy = spyOn(calendar, 'onDateSelect');
+
+			calendar.onYearSelect('event', 2022);
+
+			expect(onDateSelectSpy).toHaveBeenCalled()
+		})
+
+		it('should set currentYear to year and currentView to month string if view is other',()=>{
+			const year = 2022;
+			calendar.view = 'other';
+
+			calendar.onYearSelect('event', year);
+
+			expect(calendar.currentYear).toBe(year);
+			expect(calendar.currentView).toBe('month');
+		})
+	})
+
+	describe('onInputKeydown',()=>{
+
+		it('should call trapfocus if the keyCode is 40',()=>{
+			calendar.contentViewChild = ElementRef.prototype;
+			const trapFocusSpy = spyOn(calendar,'trapFocus');
+			
+			calendar.onInputKeydown({keyCode: 40});
+
+			expect(trapFocusSpy).toHaveBeenCalled();
+		});
+
+		it('should set overlayVisible false if keyCode is 27',()=>{
+			calendar.overlayVisible = true;
+			
+			calendar.onInputKeydown({keyCode: 27, preventDefault: ()=>{}});
+
+			expect(calendar.overlayVisible).toBeFalse();
+		});
+
+		it('should set overlayVisible if keyCode is 13',()=>{
+			calendar.overlayVisible = true;
+			
+			calendar.onInputKeydown({keyCode: 13, preventDefault: ()=>{}});
+
+			expect(calendar.overlayVisible).toBeFalse();
+		});
+	});
+
+	describe('validateTime',()=>{ 
+		it('should return false if the hour is smaller then the minDate hour',()=>{
+			const date = new Date('1995-12-17T03:24:00');
+			calendar.value = [date, undefined];
+			calendar.minDate = date;
+
+			spyOn(calendar, 'isRangeSelection').and.returnValue(true);
+
+			const result = calendar.validateTime(2,2,3,true);
+		
+			expect(result).toBeFalse();
+		})
+
+		it('should return false if the minute is smaller then the minDate minute',()=>{
+			const date = new Date('1995-12-17T02:24:00');
+			calendar.value = [date, undefined];
+			calendar.minDate = date;
+
+			spyOn(calendar, 'isRangeSelection').and.returnValue(true);
+
+			const result = calendar.validateTime(2,2,3,true);
+		
+			expect(result).toBeFalse();
+		})
+
+		it('should return false if the second is smaller then the minDate second',()=>{
+			const date = new Date('1995-12-17T02:02:10');
+			calendar.value = [date, undefined];
+			calendar.minDate = date;
+
+			spyOn(calendar, 'isRangeSelection').and.returnValue(true);
+
+			const result = calendar.validateTime(2,2,3,true);
+		
+			expect(result).toBeFalse();
+		});
+
+		it('should return false if the hour is bigger then the maxDate hour',()=>{
+			const date = new Date('1995-12-17T01:02:00');
+			calendar.value = [date];
+			calendar.maxDate = date;
+
+			spyOn(calendar, 'isMultipleSelection').and.returnValue(true);
+
+			const result = calendar.validateTime(2,2,3,true);
+		
+			expect(result).toBeFalse();
+		})
+
+		it('should return false if the minute is bigger then the maxDate minute',()=>{
+			const date = new Date('1995-12-17T02:01:00');
+			calendar.value = [date];
+			calendar.maxDate = date;
+
+			spyOn(calendar, 'isMultipleSelection').and.returnValue(true);
+
+			const result = calendar.validateTime(2,2,3,true);
+		
+			expect(result).toBeFalse();
+		})
+
+		it('should return false if the second is bigger then the maxDate second',()=>{
+			const date = new Date('1995-12-17T02:02:00');
+			calendar.value = [date];
+			calendar.maxDate = date;
+
+			spyOn(calendar, 'isMultipleSelection').and.returnValue(true);
+
+			const result = calendar.validateTime(2,2,3,true);
+		
+			expect(result).toBeFalse();
+		})
+
+		it('should return true if the time is in the interval',()=>{
+			const date = new Date('1995-12-17T02:02:03');
+			calendar.value = [date];
+			calendar.minDate = date;
+			calendar.maxDate = date;
+
+			spyOn(calendar, 'isMultipleSelection').and.returnValue(true);
+
+			const result = calendar.validateTime(2,2,3,true);
+		
+			expect(result).toBeTrue();
+		})
+
+	});
+
+
 });

@@ -1892,9 +1892,6 @@ describe('Table', () => {
         });
     });
 
-
-    //ngOnInit
-
     it("should ngOnInit call onLazyload emit if virtual scroll is enabled and set restoringFilter to false", ()=>{
         table.lazy = true;
         table.lazyLoadOnInit = true;
@@ -1973,6 +1970,6 @@ describe('Table', () => {
             table.sortMultiple();
     
             expect(_filterSpy).toHaveBeenCalled();
-        }) 
-    })
+        });
+    });
 });
