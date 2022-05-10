@@ -1,7 +1,16 @@
 import { TestBed, ComponentFixture, fakeAsync, tick, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Galleria } from './galleria';
+import { Galleria, GalleriaModule } from './galleria';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Component } from '@angular/core';
+
+@Component({
+    template: `
+        <p-galleria></p-galleria>
+    `
+})
+class TestGalleriaComponent {
+}
 
 describe('Galleria', () => {
 
@@ -11,10 +20,11 @@ describe('Galleria', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
-                NoopAnimationsModule
+                NoopAnimationsModule,
+                GalleriaModule
             ],
             declarations: [
-                Galleria
+                TestGalleriaComponent
             ]
         });
 
@@ -22,5 +32,22 @@ describe('Galleria', () => {
         galleria = fixture.componentInstance;
     });
 
-    
+    it('check onMaskHide', () => {
+        fixture.detectChanges();
+        galleria.onMaskHide();
+
+        expect(galleria.visible).toEqual(false);
+
+    });
+
+    it('check onActiveItemChange', () => {
+        fixture.detectChanges();
+        galleria.onActiveItemChange(1);
+
+        expect(galleria.activeIndex).toEqual(1);
+
+    });
+
+
+
 });
